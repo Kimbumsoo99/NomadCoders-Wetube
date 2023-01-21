@@ -1,0 +1,19 @@
+{
+  "name": "wetube",
+  "version": "1.0.0",
+  "description": "nodejs practice",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kimbumsoo99/NomadCoders-Wetube.git"
+  },
+  "scripts": {
+    "win": "node index.js"
+  },
+  "author": "KimBumsoo<show7441@naver.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kimbumsoo99/NomadCoders-Wetube/issues"
+  },
+  "homepage": "https://github.com/Kimbumsoo99/NomadCoders-Wetube#readme"
+}
