@@ -3,7 +3,7 @@ export const see = (req, res) => {
   return res.render("watch");
 };
 export const edit = (req, res) => {
-  return res.send("Edit");
+  return res.render("edit");
 };
 export const search = (req, res) => res.send("Search");
 export const upload = (req, res) => res.send("Upload");
