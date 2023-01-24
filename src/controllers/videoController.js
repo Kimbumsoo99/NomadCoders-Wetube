@@ -1,4 +1,7 @@
-export const trending = (req, res) => res.render("home", { pageTitle: "Home" });
+export const trending = (req, res) => {
+  const videos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  res.render("home", { pageTitle: "Home", videos });
+};
 export const see = (req, res) => {
   return res.render("watch");
 };
