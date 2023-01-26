@@ -41,7 +41,7 @@ export const getEdit = (req, res) => {
 export const postEdit = (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
-  videos[0].title = title;
+  videos[id - 1].title = title;
   return res.redirect(`/videos/${id}`);
 };
 export const getUpload = (req, res) => {
@@ -50,5 +50,15 @@ export const getUpload = (req, res) => {
 
 export const postUpload = (req, res) => {
   // 이곳에서 비디오를 videos array에 추가할 예정
+  const { title } = req.body;
+  const newVideo = {
+    title,
+    rating: 0,
+    comments: 0,
+    createdAt: "Just Now",
+    views: 0,
+    id: videos.length + 1,
+  };
+  videos.push(newVideo);
   return res.redirect("/");
 };
