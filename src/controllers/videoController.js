@@ -34,5 +34,17 @@ export const getUpload = (req, res) => {
 
 export const postUpload = (req, res) => {
   // 이곳에서 비디오를 videos array에 추가할 예정
+  const { title, description, hashtags } = req.body;
+  const video = new Video({
+    title,
+    description,
+    createdAt: Date.now(),
+    hashtags: hashtags.split(",").map((word) => `#${word}`),
+    meta: {
+      views: 0,
+      rating: 0,
+    },
+  });
+  console.log(video);
   return res.redirect("/");
 };
