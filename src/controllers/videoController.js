@@ -1,8 +1,13 @@
 import Video from "../models/Video";
 
 export const home = (req, res) => {
-  Video.find({}, (error, videos) => {}); //{} 빈 중괄호의 의미는 search terms로써 비어있으면 모든 형식을 찾음
-  res.render("home", { pageTitle: "Home" });
+  //{} 빈 중괄호의 의미는 search terms로써 비어있으면 모든 형식을 찾음
+  console.log("DB 검색 시작");
+  Video.find({}, (err, videos) => {
+    console.log("DB 검색 끝");
+    return res.render("home", { pageTitle: "Home", videos });
+  });
+  console.log("DB 검색 마지막 줄");
 };
 export const watch = (req, res) => {
   const { id } = req.params;
