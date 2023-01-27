@@ -1,13 +1,19 @@
 import Video from "../models/Video";
 
-export const home = (req, res) => {
-  //{} 빈 중괄호의 의미는 search terms로써 비어있으면 모든 형식을 찾음
-  console.log("DB 검색 시작");
-  Video.find({}, (err, videos) => {
-    console.log("DB 검색 끝");
-    return res.render("home", { pageTitle: "Home", videos });
-  });
-  console.log("DB 검색 마지막 줄");
+//콜백 함수 형식
+//{} 빈 중괄호의 의미는 search terms로써 비어있으면 모든 형식을 찾음
+/* 콜백과 async의 차이
+Video.find({}, (err, videos) => {
+  if(err){
+    return res.render("server-error")
+  }
+  return res.render("home", { pageTitle: "Home", videos });
+});
+
+*/
+export const home = async (req, res) => {
+  const videos = await Video.find({});
+  return res.render("home", { pageTitle: "Home", videos });
 };
 export const watch = (req, res) => {
   const { id } = req.params;
