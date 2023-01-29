@@ -11,8 +11,8 @@ const videoSchema = new mongoose.Schema({
   },
 });
 
-videoSchema.pre("save", async function () {
-  this.hashtags = this.hashtags[0]
+videoSchema.static("formatHashtags", function (hashtags) {
+  return hashtags
     .split(",")
     .map((word) => (word.startsWith("#") ? word : `#${word}`));
 });
@@ -20,18 +20,3 @@ videoSchema.pre("save", async function () {
 //미들웨어는 모델이 생성되기전에 만들어져야한다.
 const Video = mongoose.model("Video", videoSchema);
 export default Video;
-/* 예시 DB 값
-const video={
-    title:"Heki",
-    description:"lalalala",
-    createdAt: 20221212,
-    hashtags:[
-        "#hi"
-        "#mongo"
-    ]
-    meta:{
-        views:30
-        rating:4
-    }
-}
-*/
