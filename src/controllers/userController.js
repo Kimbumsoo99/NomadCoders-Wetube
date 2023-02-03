@@ -1,5 +1,6 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
+import session from "express-session";
 
 export const getJoin = (req, res) => {
   return res.render("join", { pageTitle: "Join" });
@@ -62,7 +63,8 @@ export const postLogin = async (req, res) => {
       errorMessage: "Wrong password",
     });
   }
-  console.log("LOG USER IN! COMING SOON!");
+  req.session.loggedIn = true;
+  req.session.user = user;
   return res.redirect("/");
 };
 
