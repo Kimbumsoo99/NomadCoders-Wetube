@@ -18,10 +18,13 @@ app.use(express.urlencoded({ extended: true })); //express가 form의 value들�
 
 app.use(
   session({
-    secret: "Hello!",
+    secret: process.env.COOKIE_SECRET,
     resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: "mongodb://127.0.0.1:27017/wetube" }),
+    saveUninitialized: false, //로그인한 사용자만 쿠키 정보 저장
+    /*cookie: {
+      maxAge: 10000, //세션 정보 유지 시간
+    },*/
+    store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
   })
 );
 
