@@ -111,7 +111,8 @@ export const finishGithubLogin = async (req, res) => {
         },
       })
     ).json();
-    console.log("User 데이터" + userData);
+    console.log("유저 데이터");
+    console.log(userData);
 
     const emailData = await (
       await fetch(`${apiUrl}/user/emails`, {
@@ -120,12 +121,32 @@ export const finishGithubLogin = async (req, res) => {
         },
       })
     ).json();
-    console.log("Email 데이터" + emailData);
-    const email = emailData.find(
+    console.log("Email 데이터");
+    console.log(emailData);
+
+    const emailObj = emailData.find(
       (email) => email.primary === true && email.verified === true
     );
-    if (!email) {
+    if (!emailObj) {
       return res.redirect("/login");
+    }
+    const existingUser = await User.findOne({ email: emailObj.email });
+    if (existingUser) {
+      req.session.loggedIn = true;
+      req.session.user = existingUser;
+      return res.redirect("/");
+    } else {
+      const user = await User.create({
+        name: userData.name,
+        username: userData.login,
+        email: emailObj.email,
+        password: "",
+        socialOnly: true,
+        location: userData.location,
+      });
+      req.session.loggedIn = true;
+      req.session.user = existingUser;
+      return res.redirect("/");
     }
   } else {
     return res.redirect("/login");
