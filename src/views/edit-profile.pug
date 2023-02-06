@@ -1,0 +1,9 @@
+extends base
+
+block content 
+    form(method="post") 
+        input(name="name", type="text", required, placeholder="Name", value =user.name)
+        input(name="email", type="email", required, placeholder="E-Mail", value =user.email)
+        input(name="username", type="text", required, placeholder="User Name", value =user.username)
+        input(name="location", type="text", required, placeholder="Location", value =user.location)
+        input(type="submit", value="Upadte Profile")
