@@ -1,7 +1,6 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
-import session from "express-session";
 
 export const getJoin = (req, res) => {
   return res.render("join", { pageTitle: "Join" });
@@ -110,8 +109,6 @@ export const finishGithubLogin = async (req, res) => {
         },
       })
     ).json();
-    console.log("유저 데이터");
-    console.log(userData);
 
     const emailData = await (
       await fetch(`${apiUrl}/user/emails`, {
@@ -120,8 +117,6 @@ export const finishGithubLogin = async (req, res) => {
         },
       })
     ).json();
-    console.log("Email 데이터");
-    console.log(emailData);
 
     const emailObj = emailData.find(
       (email) => email.primary === true && email.verified === true
@@ -157,7 +152,21 @@ export const logout = (req, res) => {
 export const getEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
-export const postEdit = (req, res) => {
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { name, email, username, location },
+  } = req;
+  //const id = req.session.user.id와 같음
+  await User.findByIdAndUpdate(_id, {
+    //name:name, 과 동일
+    name,
+    email,
+    username,
+    location,
+  });
   return res.render("edit-profile");
 };
 export const see = (req, res) => res.send("See User");
