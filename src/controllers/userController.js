@@ -158,10 +158,8 @@ export const postEdit = async (req, res) => {
     body: { name, email, username, location },
     file,
   } = req;
-  console.log(file);
-  const { _id } = user;
+  const { _id, avatarUrl } = user;
   //const id = req.session.user.id와 같음
-
   if (user.username !== username || user.email !== email) {
     let errorMessage;
     let exists;
@@ -179,11 +177,11 @@ export const postEdit = async (req, res) => {
       });
     }
   }
-
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
       //name:name, 과 동일
+      avatarUrl: file ? file.path : avatarUrl,
       name,
       email,
       username,
