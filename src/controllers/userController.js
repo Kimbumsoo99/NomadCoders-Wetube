@@ -156,7 +156,9 @@ export const postEdit = async (req, res) => {
   const {
     session: { user },
     body: { name, email, username, location },
+    file,
   } = req;
+  console.log(file);
   const { _id } = user;
   //const id = req.session.user.id와 같음
 
