@@ -51,12 +51,16 @@ export const getUpload = (req, res) => {
 };
 
 export const postUpload = async (req, res) => {
-  // 이곳에서 비디오를 videos array에 추가할 예정
-  const { title, description, hashtags } = req.body;
+  const {
+    body: { title, description, hashtags },
+    file,
+  } = req;
+  const { path: fileUrl } = file;
   try {
     await Video.create({
       title,
       description,
+      fileUrl,
       hashtags: Video.formatHashtags(hashtags),
     });
     return res.redirect("/");

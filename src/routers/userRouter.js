@@ -10,9 +10,9 @@ import {
   postChangePassword,
 } from "../controllers/userController";
 import {
+  avatarUpload,
   protectorMiddleware,
   publicOnlyMiddleware,
-  uploadFiles,
 } from "../middlewares";
 
 const userRouter = express.Router();
@@ -22,7 +22,7 @@ userRouter
   .route("/edit")
   .all(protectorMiddleware)
   .get(getEdit)
-  .post(uploadFiles.single("avatar"), postEdit);
+  .post(avatarUpload.single("avatar"), postEdit);
 //하나만 업로드 한다는것 single
 userRouter
   .route("/change-password")
