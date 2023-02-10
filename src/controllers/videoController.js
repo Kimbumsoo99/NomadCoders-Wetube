@@ -1,4 +1,5 @@
 import Video from "../models/Video";
+import User from "../models/User";
 
 //콜백 함수 형식
 //{} 빈 중괄호의 의미는 search terms로써 비어있으면 모든 형식을 찾음
@@ -17,19 +18,23 @@ export const home = async (req, res) => {
 };
 export const watch = async (req, res) => {
   const { id } = req.params;
-  const video = await Video.findById(id);
+  const video = await Video.findById(id).populate("owner");
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video not found." });
   }
   return res.render("watch", { pageTitle: video.title, video });
 };
+
 export const getEdit = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id);
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video not found." });
   }
-  return res.render("edit", { pageTitle: `Edit: ${video.title}`, video });
+  return res.render("edit", {
+    pageTitle: `Edit: ${video.title}`,
+    video,
+  });
 };
 
 export const postEdit = async (req, res) => {
@@ -52,15 +57,18 @@ export const getUpload = (req, res) => {
 
 export const postUpload = async (req, res) => {
   const {
+    session: {
+      user: { _id },
+    },
     body: { title, description, hashtags },
-    file,
+    file: { path: fileUrl },
   } = req;
-  const { path: fileUrl } = file;
   try {
     await Video.create({
       title,
       description,
       fileUrl,
+      owner: _id,
       hashtags: Video.formatHashtags(hashtags),
     });
     return res.redirect("/");
