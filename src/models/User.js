@@ -13,9 +13,10 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre("save", async function () {
-  console.log("Users password:", this.password);
-  this.password = await bcrypt.hash(this.password, 5); //await을 쓰고있어서 콜백 필요없음
-  console.log("Hashed password:", this.password);
+  //비밀번호가 수정될때만 미들웨어 동작
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 5); //await을 쓰고있어서 콜백 필요없음
+  }
 });
 
 const User = mongoose.model("User", userSchema);
