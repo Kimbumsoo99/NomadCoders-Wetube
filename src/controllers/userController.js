@@ -183,7 +183,7 @@ export const postEdit = async (req, res) => {
     _id,
     {
       //name:name, 과 동일
-      avatarUrl: file ? file.path : avatarUrl,
+      avatarUrl: `\\${file ? file.path : avatarUrl}`,
       name,
       email,
       username,
