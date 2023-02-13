@@ -8,8 +8,8 @@
     "url": "git+https://github.com/Kimbumsoo99/NomadCoders-Wetube.git"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node src/init.js",
-    "assets": "webpack --config webpack.config.js"
+    "dev:server": "nodemon",
+    "dev:assets": "webpack"
   },
   "author": "KimBumsoo<show7441@naver.com>",
   "license": "MIT",
