@@ -122,7 +122,7 @@ export const search = async (req, res) => {
         $regex: new RegExp(`${keyword}`, "i"),
         //$gt: 3,  //3보다 큰 것
       },
-    });
+    }).populate("owner");
   }
   return res.render("search", { pageTitle: "Search", videos });
 };
