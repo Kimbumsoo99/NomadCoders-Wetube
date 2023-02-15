@@ -1,9 +1,10 @@
 const video = document.querySelector("video");
 const playBtn = document.getElementById("play");
-const buteBtn = document.getElementById("mute");
+const muteBtn = document.getElementById("mute");
 const time = document.getElementById("time");
-const volume = document.getElementById("volume");
+const volumeRange = document.getElementById("volume");
 
+/**비디오 재생 버튼 클릭 */
 const handlePlayClick = (e) => {
   // if 비디오 재생중이면? 재생
   // else 일시정지
@@ -12,21 +13,20 @@ const handlePlayClick = (e) => {
   } else {
     video.pause();
   }
+  playBtn.innerText = video.paused ? "Play" : "Pause";
 };
 
-const handlePause = (e) => {
-  playBtn.innerText = "Play";
-};
-
-const handlePlay = (e) => {
-  playBtn.innerText = "Play";
-};
-
-const handleMute = (e) => {
+/**음소거 버튼 */
+const handleMuteClick = (e) => {
   // 음소거
+  if (video.muted) {
+    video.muted = false;
+  } else {
+    video.muted = true;
+  }
+  muteBtn.innerText = video.muted ? "Unmute" : "Mute";
+  volumeRange.value = video.muted ? 0 : 0.5;
 };
 
 playBtn.addEventListener("click", handlePlayClick);
-buteBtn.addEventListener("click", handleMute);
-video.addEventListener("pause", handlePause);
-video.addEventListener("play", handlePlay);
+muteBtn.addEventListener("click", handleMuteClick);
