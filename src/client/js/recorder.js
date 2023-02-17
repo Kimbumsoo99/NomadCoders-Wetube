@@ -1,6 +1,6 @@
 import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 
-const startBtn = document.getElementById("startBtn");
+const actionBtn = document.getElementById("actionBtn");
 const video = document.getElementById("preview");
 
 let stream = null;
@@ -13,7 +13,20 @@ const files = {
   thumb: "thumbnail.jpg",
 };
 
+const downloadFile = (fileUrl, fileName) => {
+  const a = document.createElement("a");
+  a.href = fileUrl;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+};
+
 const handleDownload = async () => {
+  actionBtn.removeEventListener("click", handleDownload);
+
+  actionBtn.innerText = "Transcoding...";
+  actionBtn.disabled = true;
+
   const ffmpeg = createFFmpeg({ log: true });
   await ffmpeg.load();
   ffmpeg.FS("writeFile", files.input, await fetchFile(videoFile));
@@ -39,17 +52,8 @@ const handleDownload = async () => {
   const mp4Url = URL.createObjectURL(mp4Blob);
   const thumbUrl = URL.createObjectURL(thumbBlob);
 
-  const a = document.createElement("a");
-  a.href = mp4Url;
-  a.download = "MyRecording.mp4";
-  document.body.appendChild(a);
-  a.click();
-
-  const thumbA = document.createElement("a");
-  thumbA.href = thumbUrl;
-  thumbA.download = "MyThumbnail.jpg";
-  document.body.appendChild(thumbA);
-  thumbA.click();
+  downloadFile(mp4Url, "MyRecording.mp4");
+  downloadFile(thumbUrl, "MyThumbnail.jpg");
 
   ffmpeg.FS("unlink", files.input);
   ffmpeg.FS("unlink", files.output);
@@ -58,6 +62,10 @@ const handleDownload = async () => {
   URL.revokeObjectURL(mp4Url);
   URL.revokeObjectURL(thumbUrl);
   URL.revokeObjectURL(videoFile);
+
+  actionBtn.disabled = false;
+  actionBtn.innerText = "Record Again";
+  actionBtn.addEventListener("click", handleStart);
 };
 // File System (형식, 파일이름, 바이너리 데이터)
 // 변환 작업 -i 는 input 작업 -r 60은 초당 60프레임
@@ -65,17 +73,17 @@ const handleDownload = async () => {
 // -frames:v 는 첫 프레임의 스크린샷을 찍어준다.
 
 const handleStop = () => {
-  startBtn.innerText = "Download Recording";
-  startBtn.removeEventListener("click", handleStop);
-  startBtn.addEventListener("click", handleDownload);
+  actionBtn.innerText = "Download Recording";
+  actionBtn.removeEventListener("click", handleStop);
+  actionBtn.addEventListener("click", handleDownload);
   recorder.stop();
 };
 
 const handleStart = async () => {
   await init();
-  startBtn.innerText = "Stop Recording";
-  startBtn.removeEventListener("click", handleStart);
-  startBtn.addEventListener("click", handleStop);
+  actionBtn.innerText = "Stop Recording";
+  actionBtn.removeEventListener("click", handleStart);
+  actionBtn.addEventListener("click", handleStop);
 
   recorder = new MediaRecorder(stream, { mimeType: "video/webm" });
   recorder.ondataavailable = (event) => {
@@ -97,4 +105,4 @@ const init = async () => {
   video.play();
 };
 
-startBtn.addEventListener("click", handleStart);
+actionBtn.addEventListener("click", handleStart);
