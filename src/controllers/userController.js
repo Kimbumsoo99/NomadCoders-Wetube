@@ -91,6 +91,7 @@ export const finishGithubLogin = async (req, res) => {
   };
   const params = new URLSearchParams(config).toString();
   const finalUrl = `${baseUrl}?${params}`;
+
   const tokenRequest = await (
     await fetch(finalUrl, {
       method: "POST",
@@ -99,6 +100,7 @@ export const finishGithubLogin = async (req, res) => {
       },
     })
   ).json();
+
   if ("access_token" in tokenRequest) {
     const { access_token } = tokenRequest;
     const apiUrl = "https://api.github.com";
