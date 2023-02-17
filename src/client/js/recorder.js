@@ -1,3 +1,5 @@
+import { async } from "regenerator-runtime";
+
 const startBtn = document.getElementById("startBtn");
 const video = document.getElementById("preview");
 
@@ -20,7 +22,8 @@ const handleStop = () => {
   recorder.stop();
 };
 
-const handleStart = () => {
+const handleStart = async () => {
+  await init();
   startBtn.innerText = "Stop Recording";
   startBtn.removeEventListener("click", handleStart);
   startBtn.addEventListener("click", handleStop);
@@ -44,7 +47,5 @@ const init = async () => {
   video.srcObject = stream;
   video.play();
 };
-
-init();
 
 startBtn.addEventListener("click", handleStart);
