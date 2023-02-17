@@ -14,23 +14,41 @@ const handleDownload = async () => {
 
   await ffmpeg.run("-i", "recording.webm", "-r", "60", "output.mp4");
 
+  await ffmpeg.run(
+    "-i",
+    "recording.webm",
+    "-ss",
+    "00:00:01",
+    "-frames:v",
+    "1",
+    "thumbnail.jpg"
+  );
+
   const mp4File = ffmpeg.FS("readFile", "output.mp4");
+  const thumbFile = ffmpeg.FS("readFile", "thumbnail.jpg");
 
   const mp4Blob = new Blob([mp4File.buffer], { type: "video/mp4" });
+  const thumbBlob = new Blob([thumbFile.buffer], { type: "image/jpg" });
 
   const mp4Url = URL.createObjectURL(mp4Blob);
+  const thumbUrl = URL.createObjectURL(thumbBlob);
 
   const a = document.createElement("a");
-
-  // File System (형식, 파일이름, 바이너리 데이터)
-
-  // 변환 작업 -i 는 input 작업 -r 60은 초당 60프레임
-
   a.href = mp4Url;
   a.download = "MyRecording.mp4";
   document.body.appendChild(a);
   a.click();
+
+  const thumbA = document.createElement("a");
+  thumbA.href = thumbUrl;
+  thumbA.download = "MyThumbnail.jpg";
+  document.body.appendChild(thumbA);
+  thumbA.click();
 };
+// File System (형식, 파일이름, 바이너리 데이터)
+// 변환 작업 -i 는 input 작업 -r 60은 초당 60프레임
+// -ss 는 특정 시간으로 이동 (포맷은 00시간 00분 00초)
+// -frames:v 는 첫 프레임의 스크린샷을 찍어준다.
 
 const handleStop = () => {
   startBtn.innerText = "Download Recording";
