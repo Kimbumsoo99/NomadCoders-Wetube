@@ -14,6 +14,13 @@ const logger = morgan("dev");
 
 app.set("view engine", "pug"); //view engine 설정
 app.set("views", process.cwd() + "/src/views"); //views 폴더 경로
+
+app.use((req, res, next) => {
+  res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  next();
+});
+
 app.use(logger); //morgan
 app.use(express.urlencoded({ extended: true })); //express가 form의 value들을 이해할 수 있도록 함.
 
