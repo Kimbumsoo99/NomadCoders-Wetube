@@ -1,5 +1,4 @@
 import User from "../models/User";
-import Video from "../models/Video";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 
@@ -16,8 +15,6 @@ export const postJoin = async (req, res) => {
     });
   }
   const exists = await User.exists({ $or: [{ username }, { email }] });
-  console.log(exists);
-  console.log("❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤");
   if (exists) {
     return res.status(400).render("join", {
       pageTitle,
@@ -58,7 +55,7 @@ export const postLogin = async (req, res) => {
     });
   }
   //비번 확인
-  const ok = await bcrypt.compare(passwordexists, user.password);
+  const ok = await bcrypt.compare(password, user.password);
   if (!ok) {
     return res.status(400).render("login", {
       pageTitle,
