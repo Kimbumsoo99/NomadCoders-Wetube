@@ -11,6 +11,7 @@ const fullScreenBtn = document.getElementById("fullScreen");
 const fullScreenIcon = fullScreenBtn.querySelector("i");
 const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.getElementById("videoControls");
+const textarea = document.querySelector("textarea");
 
 let controlsTimeout = null;
 let controlsMovementTimeout = null;
@@ -105,12 +106,15 @@ const handleKeydownControls = (event) => {
   // evnet.key = " "
   // 이런식으로 사용도 가능
   const pressKey = event.code;
-  if (pressKey == "Space") {
-    handlePlayClick();
-  } else if (pressKey == "KeyM") {
-    handleMuteClick();
-  } else if (pressKey == "KeyF") {
-    handleFullscreen();
+  if (event.target !== textarea) {
+    if (pressKey == "Space") {
+      handlePlayClick();
+      event.preventDefault();
+    } else if (pressKey == "KeyM") {
+      handleMuteClick();
+    } else if (pressKey == "KeyF") {
+      handleFullscreen();
+    }
   }
 };
 
