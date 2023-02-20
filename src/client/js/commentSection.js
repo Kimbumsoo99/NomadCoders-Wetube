@@ -48,3 +48,5 @@ const handleSubmit = async (event) => {
 if (form) {
   form.addEventListener("submit", handleSubmit);
 }
+
+const deleteBtn = document.getElementById("deleteBtn");

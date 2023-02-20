@@ -439,6 +439,19 @@ input[type=submit]:disabled,
   background-color: white;
   color: black;
   margin-bottom: 10px;
+  position: relative;
+}
+.video__comments .video__comment #deleteBtn {
+  cursor: pointer;
+  text-align: center;
+  position: absolute;
+  bottom: 30%;
+  right: 15px;
+  margin-right: 0%;
+  font-size: 12px;
+}
+.video__comments .video__comment #deleteBtn:hover {
+  background-color: #d1d1d1;
 }
 
 a {
