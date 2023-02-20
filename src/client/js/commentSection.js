@@ -18,6 +18,7 @@ const handleSubmit = async (event) => {
     },
     body: JSON.stringify({ text }),
   });
+  textarea.value = "";
 };
 // JSON.stringify는 json 객체를 {"text":"i like it","rating":"5"} 의 형태로 바꿔줌
 //backend에서는 이것을 JS object로 바꿔준다 express.json() 을 통해서
