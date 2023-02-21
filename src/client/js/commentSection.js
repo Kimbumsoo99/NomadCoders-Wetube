@@ -2,7 +2,7 @@ import { async } from "regenerator-runtime";
 
 const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
-const deleteBtn = document.querySelectorAll(".video__comments ul li");
+let deleteBtn = document.querySelectorAll(".video__comments ul li #deleteBtn");
 
 const addComment = (text, id) => {
   const videoComments = document.querySelector(".video__comments ul");
@@ -20,6 +20,8 @@ const addComment = (text, id) => {
   newComment.appendChild(spanText);
   newComment.appendChild(spanDelete);
   videoComments.prepend(newComment); // 댓글 등록을 맨 위로 올림
+  deleteBtn = document.querySelectorAll(".video__comments ul li #deleteBtn");
+  deleteBtn[0].addEventListener("click", handleDelete);
 };
 
 const handleSubmit = async (event) => {
@@ -48,23 +50,15 @@ const handleSubmit = async (event) => {
 // headers 를 통해 frontend에서 back으로 데이터를 보낼때 string이아닌 json이라는것을 알ㅇ려준다.
 
 const deleteComment = (id) => {
-  deleteBtn.forEach((btn) => {
-    if (btn.dataset.id === id) btn.remove();
-  });
+  const comment = document.querySelector(`li[data-id="${id}"]`);
+  comment.remove();
 };
 
 const handleDelete = async (event) => {
   const { id } = event.target.offsetParent.dataset;
-
-  const response = await fetch(`/api/comments/${id}/delete`, {
+  await fetch(`/api/comments/${id}/delete`, {
     method: "DELETE",
   });
-  // if (response.status === 201) {
-  //   textarea.value = "";
-  //   const { newCommentId } = await response.json();
-  //   addComment(text, newCommentId);
-  // }
-
   deleteComment(id);
 };
 
@@ -75,4 +69,3 @@ if (form) {
 deleteBtn.forEach((btn) => {
   btn.addEventListener("click", handleDelete);
 });
-// deleteBtn.addEventListener("click", handleDelete);

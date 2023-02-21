@@ -111,12 +111,19 @@ export const deleteVideo = async (req, res) => {
     user: { _id },
   } = req.session;
   const video = await Video.findById(id);
+  const owner = await User.findById(video.owner);
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video not found." });
   }
   if (String(video.owner) !== String(_id)) {
     return res.status(403).redirect("/");
   }
+  // 비디오 내부 댓글 삭제
+  await Comment.deleteMany({ video: id });
+  // 유저 정보에서 비디오 정보 삭제
+  objRemove(owner.videos, id);
+  await owner.save();
+  // 비디오 삭제
   await Video.findByIdAndDelete(id);
   return res.redirect("/");
 };
@@ -177,17 +184,16 @@ export const deleteComment = async (req, res) => {
     return res.sendStatus(404);
   }
   const video = await Video.findById(comment.video._id);
-  const videoComments = comment.video.comments;
   objRemove(video.comments, id);
   await video.save();
   await Comment.findOneAndDelete({ _id: id });
   return res.sendStatus(200);
 };
 
-function objRemove(obj, id) {
+const objRemove = (obj, id) => {
   obj.forEach((item, index) => {
     if (String(item) === id) {
       obj.splice(index, 1);
     }
   });
-}
+};
