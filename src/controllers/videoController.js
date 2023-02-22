@@ -76,7 +76,6 @@ export const getUpload = (req, res) => {
 };
 
 export const postUpload = async (req, res) => {
-  console.log(req.files);
   const {
     session: {
       user: { _id },

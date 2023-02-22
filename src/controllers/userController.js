@@ -119,8 +119,6 @@ export const finishGithubLogin = async (req, res) => {
         },
       })
     ).json();
-    console.log(userData);
-    console.log(emailData);
     const emailObj = emailData.find(
       (email) => email.primary === true && email.verified === true
     );
