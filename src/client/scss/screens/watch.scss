@@ -30,12 +30,29 @@
   margin: 0 auto;
   margin-top: 20px;
   .video__comment {
+    display: flex;
     padding: 10px;
     border-radius: 9999px;
     background-color: white;
     color: black;
     margin-bottom: 10px;
     position: relative;
+    .content__avatar {
+      float: left;
+      margin-right: 5px;
+      img {
+        border: 1px solid #d1d1d1;
+        text-align: center;
+        width: 40px;
+        height: 40px;
+      }
+    }
+    .content__main {
+      width: 270px;
+      .content__owner {
+        margin-bottom: 2px;
+      }
+    }
     #deleteBtn {
       cursor: pointer;
       text-align: center;

@@ -38,10 +38,18 @@ block content
         ul 
             each comment in video.comments.reverse()
                 li.video__comment(data-id=comment._id)
-                    i.fas.fa-comment 
-                    span  #{comment.text}
-                    if String(comment.owner._id) === String(user._id)
-                        span#deleteBtn ❌
+                    div.video__comment-content
+                        div.content__avatar
+                            if !user.avatarUrl
+                                img(src="/uploads/avatars/user.png").avatar
+                            else 
+                                img(src=user.avatarUrl,crossorigin).avatar
+                        div.content__main
+                            div.content__owner
+                                span  김범수
+                            span  #{comment.text}
+                        if String(comment.owner._id) === String(user._id)
+                            span#deleteBtn ❌
 
 block scripts 
     script(src="/assets/js/videoPlayer.js")
